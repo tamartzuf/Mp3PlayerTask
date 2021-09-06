@@ -1,4 +1,6 @@
 //assistance functions
+
+//converts seconds to the required minute fomat
 function secondsToMinutesConvertor(songDuration){
   let durationInMinutes = songDuration / 60;
   let minutes = 0;
@@ -19,7 +21,19 @@ function secondsToMinutesConvertor(songDuration){
   lengthFormat = minutes + ":" + seconds
   return lengthFormat
 }
-
+//recieves a song's id an returns that song's object
+function getSongObjectById(id){
+    let song = player.songs.filter(songObject => {
+        if(songObject.id === id){
+          return songObject;
+        }
+      })
+      if(song.length == false){
+        throw "undefined id";
+      }
+      song = song[0];
+      return song;
+}
 
 
 const player = {
@@ -71,30 +85,32 @@ const player = {
     { id: 1, name: 'Metal', songs: [1, 7, 4] },
     { id: 5, name: 'Israeli', songs: [4, 5] },
   ],
-  playSong(song) {
-     song = player.songs.filter(songObject => {
-      if(songObject.id === song){
-        return songObject;
-      }
-    })
-    console.log(song);
-    if(song.length == false){
-      console.log("undefined id")
-      return "undefined id";
-    }
-    song = song[0];
+  playSong(id) {
+    let song = getSongObjectById(id);
     song.duration = secondsToMinutesConvertor(song.duration);
-    console.log("Playing " + song.title + " from " + song.album + " by " + song.artist + " | " + song.duration + ".")
     return("Playing " + song.title + " from " + song.album + " by " + song.artist + " | " + song.duration + ".")
   },
 }
-player.playSong(0)
+
+// playSong outside function
 function playSong(id) {
-  // your code here
+ console.log(player.playSong(id))
 }
+playSong(5);
 
 function removeSong(id) {
-  // your code here
+  let indexCounter = 0;
+    player.songs.forEach(song => {
+      indexCounter ++;
+      if(song.id === id){
+        player.songs.splice(player.songs[indexCounter] ,1);
+      }else{
+        indexCounter ++;
+      }
+      if(indexCounter === player.songs.length){
+        throw "Undefined ID"
+      }
+    })
 }
 
 function addSong(title, album, artist, duration, id) {
