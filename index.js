@@ -16,20 +16,14 @@ function toSeconds(duration) {
 }
 
 function removeSongFromPlayer(id) {
-  for(let i in player.songs) {
-    if(player.songs[i].id === id) {
-      player.songs.splice(i,1);
-      return true;
-    }
-  }
-  return false;
+  const songIndex = player.songs.indexOf(getSong(id));
+  player.songs.splice(songIndex, 1);
 }
 
 function removeSongFromPlaylists(id) {
   for(let playlist of player.playlists) {
-    for (let i in playlist.songs) {
-      if(playlist.songs[i] === id) playlist.songs.splice(i, 1);
-    }
+    const songIndex = playlist.songs.indexOf(id);
+    playlist.songs.splice(songIndex, 1);
   }
 }
 
@@ -37,10 +31,7 @@ function removeSongFromPlaylists(id) {
 this function checks if an id exists in the objects array
 */
 function isIdExist(arr, id) {
-  for (let obj of arr) {
-    if(obj.id === id) return true;
-  }
-  return false;
+  return arr.find(x => x.id === id) !== undefined;
 }
 
 /*
@@ -55,15 +46,13 @@ function getMaxId(arr) {
 }
 
 function getPlaylist(id) {
-  for(let playlist of player.playlists) {
-    if(playlist.id === id) return playlist;
-  }
+  const playlist = player.playlists.find(x => x.id === id);
+  return playlist;
 }
 
 function getSong(id) {
-  for(let song of player.songs) {
-    if(song.id === id) return song;
-  }
+  const song = player.songs.find(x => x.id === id);
+  return song;
 }
 
 function existError() {
@@ -74,11 +63,11 @@ function notExistError() {
 }
 
 /*
-recursion function that sums the array elements.
+recursion function that sums the duration of a playlist.
 */
-function sumArr(arr) {
+function sumDuration(arr) {
   if(arr.length === 0) return 0;
-  return arr.pop() + sumArr(arr.slice(0, arr.length));
+  return getSong(arr.pop()).duration + sumDuration(arr.slice(0, arr.length));
 }
 
 /*
@@ -104,17 +93,11 @@ this function gets an array of objects and sort
 it alphanumerically by the property of the objects
 */
 function sortObjectsArray(arr, property) {
-  const sortedKeys = [];
-  for(let key of arr) {
-    sortedKeys.push(key[property]);
-  }
-  sortedKeys.sort();
   const sortedObjects = [];
-  for (let i = 0; i < sortedKeys.length; i++) {
-    for (let j = 0; j < arr.length; j++) {
-      if(sortedKeys[i] === arr[j][property]) sortedObjects.push(arr[j]);
-    }
+  for (let obj of arr) {
+    sortedObjects.push(obj);
   }
+  sortedObjects.sort((a, b) => {if(a[property] < b[property]) return -1;});
   return sortedObjects;
 }
 
@@ -193,14 +176,13 @@ const player = {
 
 function playSong(id) {
   if(!isIdExist(player.songs, id)) notExistError();
-  for(let song of player.songs) {
-    if(song.id === id) console.log(player.playSong(song));
-  }
+  const song = player.songs.find(x => x.id === id);
+  console.log(player.playSong(song));
 }
 
 function removeSong(id) {
-  const isExist = removeSongFromPlayer(id);
-  if(!isExist) notExistError();
+  if(!isIdExist(player.songs, id)) notExistError();
+  removeSongFromPlayer(id);
   removeSongFromPlaylists(id);
 }
 
@@ -241,11 +223,10 @@ function playPlaylist(id) {
 }
 
 function editPlaylist(playlistId, songId) {
-  if(!isIdExist(player.playlists, playlistId)) notExistError();
-  if(!isIdExist(player.songs, songId)) notExistError();
+  if(!isIdExist(player.playlists, playlistId) || !isIdExist(player.songs, songId)) notExistError();
   const playlist = getPlaylist(playlistId);
   if(playlist.songs.indexOf(songId) >= 0) {
-    console.log(playlist.songs.splice(playlist.songs.indexOf(songId), 1));
+    playlist.songs.splice(playlist.songs.indexOf(songId), 1);
     if(playlist.songs.length === 0) removePlaylist(playlistId);
   } else {
     playlist.songs.push(songId);
@@ -255,11 +236,8 @@ function editPlaylist(playlistId, songId) {
 function playlistDuration(id) {
   if(!isIdExist(player.playlists, id)) notExistError();
   const playlist = getPlaylist(id);
-  const secondsArr = [];
-  for (let songId of playlist.songs) {
-    secondsArr.push(getSong(songId).duration);
-  }
-  return sumArr(secondsArr);
+  const secondsArr = [...playlist.songs];
+  return sumDuration(secondsArr);
 }
 
 function searchByQuery(query) {
