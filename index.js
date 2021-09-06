@@ -61,6 +61,20 @@ const player = {
     )
   },
 }
+
+function duratinFormat(duration) {
+  let minutes = Math.floor(duration / 60)
+  let seconds = duration % 60
+  if (minutes < 10 && seconds < 10) {
+    return '0' + minutes + ':0' + seconds
+  } else if (minutes < 10) {
+    return '0' + minutes + ':' + seconds
+  } else if (seconds < 10) {
+    return minutes + ':0' + seconds
+  }
+  return minutes + ':' + seconds
+}
+
 //function to check if id is exist in song
 function isIdExist(playerSong, id) {
   for (let i = 0; i < playerSong.length; i++) {
