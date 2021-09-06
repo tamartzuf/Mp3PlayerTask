@@ -63,6 +63,7 @@ const player = {
 }
 
 function durationFormat(duration) {
+  //presen according the mm:ss format
   let minutes = Math.floor(duration / 60)
   let seconds = duration % 60
   if (minutes < 10 && seconds < 10) {
@@ -83,6 +84,16 @@ function isIdExist(playerSong, id) {
     }
   }
   return false
+}
+//return the max id from tae array songs
+function maxId() {
+  let max = player.songs[0].id
+  for (let i = 0; i < player.songs.length; i++) {
+    if (max < player.songs[i].id) {
+      max = arr[i].id
+    }
+  }
+  return max
 }
 
 function playSong(id) {
@@ -116,7 +127,13 @@ function removeSong(id) {
 }
 
 function addSong(title, album, artist, duration, id) {
-  // your code here
+  player.songs.push({
+    title: title,
+    album: album,
+    artist: artist,
+    duration: durationFormat(duration),
+    id: id,
+  })
 }
 
 function removePlaylist(id) {
