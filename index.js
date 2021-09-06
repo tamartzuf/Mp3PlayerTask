@@ -197,11 +197,11 @@ function removePlaylist(id) {
       player.playlists.splice(indexCounter ,1);
     }else{
       indexCounter ++;
-    }
-    if(indexCounter === player.playlists.length){
-      throw "Undefined ID"
-    }
-  }) 
+        if(indexCounter === player.playlists.length){
+          throw "Undefined ID"
+        }
+      }
+    }) 
 }
 //create playlist function
 let playlistIdCounter = 6;
@@ -277,9 +277,33 @@ function playlistDuration(id) {
   }))
   return totalDuration;
 }
-
+//search by query function
 function searchByQuery(query) {
-  // your code here
+  let matchingSongs = player.songs.filter(song => {
+    for(let property in song){
+      if (song[property].toString().toLowerCase().includes(query.toLowerCase())){
+        return song;
+      }
+    }
+  })
+  let matchingPlaylists = player.playlists.filter(playlist => {
+    if(playlist.name.toLowerCase().includes(query.toLowerCase())){
+      return playlist;
+    }
+  })
+  matchingSongs = matchingSongs.sort((a, b) => {
+    if(b["title"] < a["title"]){
+        return 1;
+    }
+    if(b["title"] > a["title"]){
+        return -1
+    }
+    return 0;
+  });
+  return {
+    "songs" : matchingSongs,
+    "playlists" : matchingPlaylists
+  }
 }
 
 function searchByDuration(duration) {
