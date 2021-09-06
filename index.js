@@ -264,7 +264,24 @@ function searchByQuery(query) {
 }
 
 function searchByDuration(duration) {
-  // your code here
+  duration = toSeconds(duration);
+  let difference;
+  let obj = null;
+  for(let playlist of player.playlists) {
+    let diff = playlistDuration(playlist.id) - duration;
+    if(Math.abs(diff) < difference || !difference) {
+      difference = Math.abs(diff);
+      obj = playlist;
+    }
+  }
+  for(let song of player.songs) {
+    let diff = song.duration - duration;
+    if(Math.abs(diff) < difference) {
+      difference = Math.abs(diff);
+      obj = song;
+    }
+  }
+  return obj;
 }
 
 module.exports = {
