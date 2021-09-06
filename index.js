@@ -10,6 +10,24 @@ function toMinutes(sec) {
   return minFormat.join(':');
 }
 
+function removeSongFromPlayer(id) {
+  for(let i in player.songs) {
+    if(player.songs[i].id === id) {
+      player.songs.splice(i,1);
+      return true;
+    }
+  }
+  return false;
+}
+
+function removeSongFromPlaylists(id) {
+  for(let playlist of player.playlists) {
+    for (let i in playlist.songs) {
+      if(playlist.songs[i] === id) playlist.songs.splice(i, 1);
+    }
+  }
+}
+
 const player = {
   songs: [
     {
@@ -65,11 +83,22 @@ const player = {
 }
 
 /* CHECKING deleteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee lineeeeeeeeeeeeeeee*/
-//  playSong(5);
+// // let arr = [1,2,3,4];
+// // arr.splice(2,1);
+// // console.log(arr);
+// console.log(player.playlists);
+// playSong(5);
+// console.log(player.playlists);
+// console.log(player.songs);
+// removeSong(2);
+// removeSong(5);
+// console.log(player.playlists);
+// console.log(player.songs);
+// playSong(5);
 
 function playSong(id) {
   let isExist = false;
-  for(song of player.songs) {
+  for(let song of player.songs) {
     if(song.id === id) {
       console.log(player.playSong(song));
       isExist = true;
@@ -79,7 +108,9 @@ function playSong(id) {
 }
 
 function removeSong(id) {
-  // your code here
+  let isExist = removeSongFromPlayer(id);
+  if(!isExist) throw 'song does not exist!';
+  removeSongFromPlaylists(id);
 }
 
 function addSong(title, album, artist, duration, id) {
