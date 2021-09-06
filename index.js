@@ -31,6 +31,13 @@ function secondsToMinutesConvertor(songDuration){
   lengthFormat = minutes + ":" + seconds
   return lengthFormat
 }
+ // converts string minutes format to secoonds
+ function convertToseconds(durationInMinutes){
+  let minutes = Number(durationInMinutes.split("").slice(0, 2).join(""));
+  let seconds = Number(durationInMinutes.split("").slice(3, 5).join(""));
+  let totalTime = (minutes * 60) + seconds;
+  return totalTime
+}
 //recieves a song's id an returns that song's object
 function getSongObjectById(id){
     let song = player.songs.filter(songObject => {
@@ -136,7 +143,7 @@ function playSong(id) {
  console.log(player.playSong(id))
 }
 playSong(5);
-
+//remove song function
 function removeSong(id) {
   let indexCounter = 0;
     player.songs.forEach(song => {
@@ -161,11 +168,11 @@ function removeSong(id) {
       })
     })
 }
-
+//add song function
 let idCounter = 8;
 function addSong(title, album, artist, duration, id) {
   let newSongId = generatId(id, "songs", idCounter);
-  duration = secondsToMinutesConvertor(duration);
+  duration = convertToseconds(duration);
   let newSong = {
     "id" : newSongId,
     "title" : title,
@@ -176,7 +183,7 @@ function addSong(title, album, artist, duration, id) {
   player.songs.push(newSong);
   return newSongId
 }
-
+//remove playlist function
 function removePlaylist(id) {
   let indexCounter = 0;
   player.playlists.forEach(playlist => {
@@ -190,6 +197,7 @@ function removePlaylist(id) {
     }
   }) 
 }
+//create playlist function
 let playlistIdCounter = 6;
 function createPlaylist(name, id) {
   let playListId = generatId(id, "playlists", playlistIdCounter);
