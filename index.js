@@ -74,14 +74,20 @@ function generatId(id, playlistsOrSongs, songsOrPlaylistsIdCounter){
 }
 // get playlist by ID
 function getPlaylistById(id){
+  let indexCounter = 0;
   let playlistById = player.playlists.filter(playlist =>{
       if(playlist.id === id){
         return playlist;
+      }else{
+        indexCounter ++;
+        if(indexCounter === player.playlists.length){
+          throw "non existant ID"
+        }
       }
     })
     return playlistById[0];
   }
-
+// main work
 const player = {
   songs: [
     {
@@ -220,6 +226,7 @@ function playPlaylist(id) {
   PlaylsitById[0].songs.forEach(song => playSong(song));
 }
 
+//edit playlist function
 function editPlaylist(playlistId, songId) {
   let playlistIndexCounter = 0;
   player.playlists.forEach(playlist =>{
@@ -260,7 +267,15 @@ function editPlaylist(playlistId, songId) {
 }
 
 function playlistDuration(id) {
-  // your code here
+   let requestedPlaylist = getPlaylistById(id);
+   let songsLengthsArray = requestedPlaylist.songs.map(song => {
+     return (getSongObjectById(song).duration);
+   })
+   let totalDuration = (songsLengthsArray.reduce((acc, value) => {
+    acc += value;
+    return acc;
+  }))
+  return totalDuration;
 }
 
 function searchByQuery(query) {
