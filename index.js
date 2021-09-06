@@ -50,19 +50,19 @@ const player = {
   playSong(song) {
     console.log(
       'Playing ' +
-        song[title] +
-        'from ' +
-        song[album] +
-        'by ' +
-        song[artist] +
-        '|' +
-        song[duration] +
+        song.title +
+        ' from ' +
+        song.album +
+        ' by ' +
+        song.artist +
+        ' | ' +
+        durationFormat(song.duration) +
         '.'
     )
   },
 }
 
-function duratinFormat(duration) {
+function durationFormat(duration) {
   let minutes = Math.floor(duration / 60)
   let seconds = duration % 60
   if (minutes < 10 && seconds < 10) {
@@ -85,7 +85,14 @@ function isIdExist(playerSong, id) {
   return false
 }
 
-function playSong(id) {}
+function playSong(id) {
+  if (!isIdExist(player.songs, id)) throw new Error('ID is not found')
+  for (let i = 0; i < player.songs.length; i++) {
+    if (player.songs[i].id === id) {
+      console.log(player.playSong(player.songs[i]))
+    }
+  }
+}
 
 function removeSong(id) {
   if (!isIdExist(player.songs, id)) {
