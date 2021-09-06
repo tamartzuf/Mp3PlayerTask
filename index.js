@@ -116,14 +116,10 @@ const player = {
 // console.log(toSeconds("04:19"))
 
 function playSong(id) {
-  let isExist = false;
+  if(!isIdExist(player.songs, id)) throw 'song does not exist!';
   for(let song of player.songs) {
-    if(song.id === id) {
-      console.log(player.playSong(song));
-      isExist = true;
-    }
+    if(song.id === id) console.log(player.playSong(song));
   }
-  if(!isExist) throw 'song does not exist!';
 }
 
 function removeSong(id) {
@@ -134,7 +130,7 @@ function removeSong(id) {
 
 function addSong(title, album, artist, duration, id) {
   if(id === undefined) {
-    id = getMaxId(player.songs) + 1;
+    id = getMaxId(player.songs) + 1; //generates auto id (max id + 1)
   } else {
     if(isIdExist(player.songs, id)) throw 'this id already exist!';
   }
@@ -144,11 +140,21 @@ function addSong(title, album, artist, duration, id) {
 }
 
 function removePlaylist(id) {
-  // your code here
+  if(!isIdExist(player.playlists, id)) throw 'id does not exist!';
+  for (let i in player.playlists) {
+    if(player.playlists[i].id === id) player.playlists.splice(i, 1);
+  }
 }
 
 function createPlaylist(name, id) {
-  // your code here
+  if(id === undefined) {
+    id = getMaxId(player.playlists) + 1; //generates auto id (max id + 1)
+  } else {
+    if(isIdExist(player.playlists, id)) throw 'this id already exist!';
+  }
+  // duration = toSeconds(duration);
+  player.playlists.push({id, name, songs: []});
+  return id;
 }
 
 function playPlaylist(id) {
