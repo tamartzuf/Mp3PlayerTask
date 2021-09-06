@@ -60,15 +60,18 @@ const player = {
     { id: 5, name: 'Israeli', songs: [4, 5] },
   ],
   playSong(song) {
-    console.log(`Playing ${song.title} from ${song.album} by ${song.artist} | ${toMinutes(song.duration)}.`);
+    return `Playing ${song.title} from ${song.album} by ${song.artist} | ${toMinutes(song.duration)}.`;
   },
 }
+
+/* CHECKING deleteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee lineeeeeeeeeeeeeeee*/
+//  playSong(5);
 
 function playSong(id) {
   let isExist = false;
   for(song of player.songs) {
     if(song.id === id) {
-      player.playSong(song);
+      console.log(player.playSong(song));
       isExist = true;
     }
   }
