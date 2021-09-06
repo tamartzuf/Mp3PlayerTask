@@ -118,6 +118,24 @@ function sortObjectsArray(arr, property) {
   return sortedObjects;
 }
 
+/*
+this function gets an array of objects and duration 
+(in seconds) and returns the object with the minimum 
+difference between the durations.
+*/
+function minDurDifference(arr, duration) {
+  let difference = null;  
+  let newObj = null;
+  for(let obj of arr) {
+    let diff = obj.hasOwnProperty('name') ? playlistDuration(obj.id) - duration: obj.duration - duration;
+    if(Math.abs(diff) < difference || !difference) {
+      difference = Math.abs(diff);
+      newObj = obj;
+    }
+  }
+  return newObj;
+}
+
 
 const player = {
   songs: [
@@ -265,23 +283,11 @@ function searchByQuery(query) {
 
 function searchByDuration(duration) {
   duration = toSeconds(duration);
-  let difference;
-  let obj = null;
-  for(let playlist of player.playlists) {
-    let diff = playlistDuration(playlist.id) - duration;
-    if(Math.abs(diff) < difference || !difference) {
-      difference = Math.abs(diff);
-      obj = playlist;
-    }
-  }
-  for(let song of player.songs) {
-    let diff = song.duration - duration;
-    if(Math.abs(diff) < difference) {
-      difference = Math.abs(diff);
-      obj = song;
-    }
-  }
-  return obj;
+  const songObj = minDurDifference(player.songs, duration);
+  const playlistObj = minDurDifference(player.playlists, duration);
+  const songDur = Math.abs(songObj.duration - duration);
+  const playlistDur = Math.abs(playlistDuration(playlistObj.id) - duration);
+  return songDur < playlistDur ? songObj: playlistObj;
 }
 
 module.exports = {
