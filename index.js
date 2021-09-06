@@ -62,8 +62,8 @@ const player = {
   },
 }
 
+//presen according the mm:ss format
 function durationFormat(duration) {
-  //presen according the mm:ss format
   let minutes = Math.floor(duration / 60)
   let seconds = duration % 60
   if (minutes < 10 && seconds < 10) {
@@ -100,6 +100,7 @@ function maxId() {
 function newId() {
   return maxId() + 1
 }
+///////////////////////////////////////////////////////////////////////////
 
 function playSong(id) {
   if (!isIdExist(player.songs, id)) throw new Error('ID is not found')
@@ -133,13 +134,9 @@ function removeSong(id) {
 
 function addSong(title, album, artist, duration, id = newId()) {
   if (isIdExist(player.songs, id)) throw new Error('ID is already exist')
-  player.songs.push({
-    title: title,
-    album: album,
-    artist: artist,
-    duration: durationFormat(duration),
-    id: id,
-  })
+  duration = durationFormat(duration)
+  player.songs.push({ title, album, artist, duration, id })
+  return id
 }
 
 function removePlaylist(id) {
@@ -149,8 +146,10 @@ function removePlaylist(id) {
   }
 }
 
-function createPlaylist(name, id) {
-  // your code here
+function createPlaylist(name, id = newId()) {
+  if (isIdExist(player.playlists, id)) throw new Error('ID is already exist')
+  player.playlists.push({ name, id })
+  return id
 }
 
 function playPlaylist(id) {
