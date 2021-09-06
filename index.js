@@ -61,6 +61,13 @@ function getPlaylist(id) {
   }
 }
 
+function existError() {
+  throw 'this id already exist!';
+}
+function notExistError() {
+  throw 'this id does not exist!';
+}
+
 const player = {
   songs: [
     {
@@ -122,7 +129,7 @@ const player = {
 // console.log(toSeconds("04:19"))
 
 function playSong(id) {
-  if(!isIdExist(player.songs, id)) throw 'song does not exist!';
+  if(!isIdExist(player.songs, id)) notExistError();
   for(let song of player.songs) {
     if(song.id === id) console.log(player.playSong(song));
   }
@@ -130,7 +137,7 @@ function playSong(id) {
 
 function removeSong(id) {
   let isExist = removeSongFromPlayer(id);
-  if(!isExist) throw 'song does not exist!';
+  if(!isExist) notExistError();
   removeSongFromPlaylists(id);
 }
 
@@ -138,7 +145,7 @@ function addSong(title, album, artist, duration, id) {
   if(id === undefined) {
     id = getMaxId(player.songs) + 1; //generates auto id (max id + 1)
   } else {
-    if(isIdExist(player.songs, id)) throw 'this id already exist!';
+    if(isIdExist(player.songs, id)) existError();
   }
   duration = toSeconds(duration);
   player.songs.push({id, title, album, artist, duration});
@@ -146,7 +153,7 @@ function addSong(title, album, artist, duration, id) {
 }
 
 function removePlaylist(id) {
-  if(!isIdExist(player.playlists, id)) throw 'id does not exist!';
+  if(!isIdExist(player.playlists, id)) notExistError();
   for (let i in player.playlists) {
     if(player.playlists[i].id === id) player.playlists.splice(i, 1);
   }
@@ -156,14 +163,14 @@ function createPlaylist(name, id) {
   if(id === undefined) {
     id = getMaxId(player.playlists) + 1; //generates auto id (max id + 1)
   } else {
-    if(isIdExist(player.playlists, id)) throw 'this id already exist!';
+    if(isIdExist(player.playlists, id)) existError();
   }
   player.playlists.push({id, name, songs: []});
   return id;
 }
 
 function playPlaylist(id) {
-  if(!isIdExist(player.playlists, id)) throw 'this id already exist!';
+  if(!isIdExist(player.playlists, id)) notExistError();
   const playlist = getPlaylist(id);
   for (let i = 0; i < playlist.songs.length; i++) {
     playSong(playlist.songs[i]);
@@ -171,7 +178,7 @@ function playPlaylist(id) {
 }
 
 function editPlaylist(playlistId, songId) {
-  // your code here
+  // if(!isIdExist(player.playlists, playlistId)) 
 }
 
 function playlistDuration(id) {
