@@ -82,7 +82,18 @@ function playSong(id) {
 }
 
 function removeSong(id) {
-  // your code here
+  //remove sng from songs list
+  let songIndex = player.songs.indexOf(getSongById(id))
+  player.songs.splice(songIndex,1);
+
+  //remove song from all playlists
+  for(let i=0; i<player.playlists.length; i++){             //iterate playlists
+    for(let j=0; j<player.playlists[i].songs.length; j++){  //iterate songs id in playlist
+      if(player.playlists[i].songs[j] == id){
+        player.playlists[i].songs.splice(j,1);
+      }
+    }
+  }
 }
 
 function addSong(title, album, artist, duration, id) {
