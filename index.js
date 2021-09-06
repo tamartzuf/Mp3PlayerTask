@@ -63,8 +63,8 @@ const player = {
 }
 //function to check if id is exist in song
 function isIdExist(playerSong, id) {
-  for (let i = 0; i < playerSong; i++) {
-    if (songs[i].id === id) {
+  for (let i = 0; i < playerSong.length; i++) {
+    if (playerSong[i].id === id) {
       return true
     }
   }
@@ -99,7 +99,10 @@ function addSong(title, album, artist, duration, id) {
 }
 
 function removePlaylist(id) {
-  // your code here
+  if (!isIdExist(player.playlists, id)) throw new Error('ID is not found')
+  for (let i = 0; i < player.playlists.length; i++) {
+    if (player.playlists[i].id === id) player.playlists.splice(i, 1)
+  }
 }
 
 function createPlaylist(name, id) {
