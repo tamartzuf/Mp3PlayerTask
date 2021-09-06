@@ -65,7 +65,14 @@ const player = {
 }
 
 function playSong(id) {
-  // your code here
+  let isExist = false;
+  for(song of player.songs) {
+    if(song.id === id) {
+      player.playSong(song);
+      isExist = true;
+    }
+  }
+  if(!isExist) throw 'song does not exist!';
 }
 
 function removeSong(id) {
