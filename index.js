@@ -10,6 +10,12 @@ function toMinutes(sec) {
   return minFormat.join(':');
 }
 
+function toSeconds(duration) {
+  //04:19
+  let arr = duration.split(':');
+  return parseInt(arr[0]) * 60 + parseInt(arr[1]);
+}
+
 function removeSongFromPlayer(id) {
   for(let i in player.songs) {
     if(player.songs[i].id === id) {
@@ -107,7 +113,7 @@ const player = {
 // // let arr = [1,2,3,4];
 // // arr.splice(2,1);
 // // console.log(arr);
-console.log(isIdExist(player.songs, 6))
+// console.log(toSeconds("04:19"))
 
 function playSong(id) {
   let isExist = false;
@@ -127,7 +133,14 @@ function removeSong(id) {
 }
 
 function addSong(title, album, artist, duration, id) {
-  // your code here
+  if(id === undefined) {
+    id = getMaxId(player.songs) + 1;
+  } else {
+    if(isIdExist(player.songs, id)) throw 'this id already exist!';
+  }
+  duration = toSeconds(duration);
+  player.songs.push({id, title, album, artist, duration});
+  return id;
 }
 
 function removePlaylist(id) {
