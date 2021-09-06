@@ -11,7 +11,6 @@ function toMinutes(sec) {
 }
 
 function toSeconds(duration) {
-  //04:19
   let arr = duration.split(':');
   return parseInt(arr[0]) * 60 + parseInt(arr[1]);
 }
@@ -82,6 +81,43 @@ function sumArr(arr) {
   return arr.pop() + sumArr(arr.slice(0, arr.length));
 }
 
+/*
+this function gets a query, an array of objects, 
+and array of keys and returns an array of
+objects if the query includes in the keys
+*/
+function queryArr(query, objArr, keyArr) {
+  const queryArr = [];
+  for(let obj of objArr) {
+    for(let i = 0; i < keyArr.length; i++) {
+      if(obj[keyArr[i]].includes(query)) {
+        queryArr.push(obj);
+        i = keyArr.length;
+      }
+    }
+  }
+  return queryArr;
+}
+
+/*
+this function gets an array of objects and sort
+it alphanumerically by the property of the objects
+*/
+function sortObjectsArray(arr, property) {
+  const sortedKeys = [];
+  for(let key of arr) {
+    sortedKeys.push(key[property]);
+  }
+  sortedKeys.sort();
+  const sortedObjects = [];
+  for (let i = 0; i < sortedKeys.length; i++) {
+    for (let j = 0; j < arr.length; j++) {
+      if(sortedKeys[i] === arr[j][property]) sortedObjects.push(arr[j]);
+    }
+  }
+  return sortedObjects;
+}
+
 
 const player = {
   songs: [
@@ -145,7 +181,7 @@ const player = {
 // console.log(sumArr([242, 213, 270]));
 // console.log(playlistDuration(1));
 // console.log(player.songs[4].album.includes("ll"));
-console.log(searchByQuery("ll"));
+// console.log(searchByQuery("ll"));
 
 function playSong(id) {
   if(!isIdExist(player.songs, id)) notExistError();
@@ -212,29 +248,18 @@ function playlistDuration(id) {
   if(!isIdExist(player.playlists, id)) notExistError();
   const playlist = getPlaylist(id);
   const secondsArr = [];
-  for(let songId of playlist.songs) {
+  for (let songId of playlist.songs) {
     secondsArr.push(getSong(songId).duration);
   }
   return sumArr(secondsArr);
 }
 
 function searchByQuery(query) {
-  const obj = {songs: [], playlist: []};
-  for(let song of player.songs) {
-    if(song.title.includes(query)) {
-      obj.songs.push(song);
-      continue; //continue to the next song
-    }
-    if(song.album.includes(query)) {
-      obj.songs.push(song);
-      continue; //continue to the next song
-    }
-    if(song.artist.includes(query)) {
-      obj.songs.push(song);
-      continue; //continue to the next song
-    }
-  }
-  // obj.songs.sort();
+  const obj = {songs: [], playlists: []};
+  obj.songs = queryArr(query, player.songs, ['title', 'album', 'artist']);
+  obj.playlists = queryArr(query, player.playlists, ['name']);
+  obj.songs = sortObjectsArray(obj.songs, 'title');
+  obj.playlists = sortObjectsArray(obj.playlists, 'name');
   return obj;
 }
 
