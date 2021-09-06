@@ -154,23 +154,7 @@ function removeSong(id) {
 
 let idCounter = 8;
 function addSong(title, album, artist, duration, id) {
-  let newSongId = 0;
-  let indexCounter = 0;
-  if(id == undefined){
-    newSongId = idCounter;
-  }else{
-      player.songs.forEach(song => {
-            if(song.id === id){
-              throw "taken ID"
-            }else{
-                indexCounter ++;
-                if(indexCounter === player.songs.length){
-                newSongId = id;
-                }
-          }
-          });
-  }
-  idCounter ++;
+  let newSongId = generatId(id, "songs", idCounter);
   duration = secondsToMinutesConvertor(duration);
   let newSong = {
     "id" : newSongId,
@@ -205,13 +189,17 @@ function createPlaylist(name, id) {
     "name" : name,
     "songs" : []
   }
-  console.log(newPlaylist);
   player.playlists.push(newPlaylist);
+  return playListId
 }
-createPlaylist("mosh");
 
 function playPlaylist(id) {
-  // your code here
+  let PlaylsitById = player.playlists.filter(playlist =>{
+    if(playlist.id === id){
+      return playlist;
+    }
+  })
+  PlaylsitById[0].songs.forEach(song => playSong(song));
 }
 
 function editPlaylist(playlistId, songId) {
