@@ -42,6 +42,27 @@ function getSongObjectById(id){
       song = song[0];
       return song;
 }
+// generat new ID function
+function generatId(id, playlistsOrSongs, songsOrPlaylistsIdCounter){
+  let newId = 0;
+  let indexCounter = 0;
+  if(!id){
+      newId = songsOrPlaylistsIdCounter;
+  }else{
+      player[playlistsOrSongs].forEach(song => {
+              if(song.id === id){
+              throw "taken ID"
+              }else{
+                  indexCounter ++;
+                  if(indexCounter === player[playlistsOrSongs].length){
+                  newId = id;
+                  }
+          }
+          });
+  }
+  songsOrPlaylistsIdCounter++;
+  return newId
+}
 
 
 const player = {
@@ -175,10 +196,19 @@ function removePlaylist(id) {
     }
   }) 
 }
-
+let playlistIdCounter = 6;
 function createPlaylist(name, id) {
-  // your code here
+  let playListId = generatId(id, "playlists", playlistIdCounter);
+    console.log(playListId);
+  let newPlaylist = {
+    "id" : playListId,
+    "name" : name,
+    "songs" : []
+  }
+  console.log(newPlaylist);
+  player.playlists.push(newPlaylist);
 }
+createPlaylist("mosh");
 
 function playPlaylist(id) {
   // your code here
