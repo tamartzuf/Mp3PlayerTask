@@ -4,14 +4,14 @@ and return a string value of the minutes
 in 'mm:ss' format.
 */
 function toMinutes(sec) {
-  let minFormat = ["mm", "ss"];
+  const minFormat = ["mm", "ss"];
   minFormat[1] = sec % 60 < 10 ? "0" + sec % 60: sec % 60;
   minFormat[0] = sec / 60 < 10 ? "0" + Math.floor(sec / 60): Math.floor(sec / 60);
   return minFormat.join(':');
 }
 
 function toSeconds(duration) {
-  let arr = duration.split(':');
+  const arr = duration.split(':');
   return parseInt(arr[0]) * 60 + parseInt(arr[1]);
 }
 
@@ -127,7 +127,7 @@ function minDurDifference(arr, duration) {
   let difference = null;  
   let newObj = null;
   for(let obj of arr) {
-    let diff = obj.hasOwnProperty('name') ? playlistDuration(obj.id) - duration: obj.duration - duration;
+    const diff = obj.hasOwnProperty('name') ? playlistDuration(obj.id) - duration: obj.duration - duration;
     if(Math.abs(diff) < difference || !difference) {
       difference = Math.abs(diff);
       newObj = obj;
@@ -199,7 +199,7 @@ function playSong(id) {
 }
 
 function removeSong(id) {
-  let isExist = removeSongFromPlayer(id);
+  const isExist = removeSongFromPlayer(id);
   if(!isExist) notExistError();
   removeSongFromPlaylists(id);
 }
