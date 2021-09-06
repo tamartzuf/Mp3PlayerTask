@@ -1,5 +1,7 @@
 //assistance functions
 
+const { pipelinePrimaryTopicReference } = require("@babel/types");
+
 //converts seconds to the required minute fomat
 function secondsToMinutesConvertor(songDuration){
   let durationInMinutes = songDuration / 60;
@@ -63,7 +65,15 @@ function generatId(id, playlistsOrSongs, songsOrPlaylistsIdCounter){
   songsOrPlaylistsIdCounter++;
   return newId
 }
-
+// get playlist by ID
+function getPlaylistById(id){
+  let playlistById = player.playlists.filter(playlist =>{
+      if(playlist.id === id){
+        return playlist;
+      }
+    })
+    return playlistById[0];
+  }
 
 const player = {
   songs: [
@@ -203,7 +213,42 @@ function playPlaylist(id) {
 }
 
 function editPlaylist(playlistId, songId) {
-  // your code here
+  let playlistIndexCounter = 0;
+  player.playlists.forEach(playlist =>{
+    let songsIndexCounter = 0;
+    if(playlist.id === playlistId){
+      playlist.songs.forEach(song => {
+        if(songId === song){
+           if(playlist.songs.length === 1){
+             player.playlists.splice(playlistIndexCounter, 1)
+           }else{
+             playlist.songs.splice(songsIndexCounter, 1);
+           }
+        }else{
+          songsIndexCounter ++;
+          if(songsIndexCounter === playlist.songs.length){
+            let indexCounter = 0;
+            player.songs.forEach(song => {
+              if(song.id === songId){
+                player.playlists[playlistIndexCounter].songs.push(songId);
+              }else{
+                indexCounter ++;
+                if(indexCounter === player.songs.length){
+                  throw "non existant song ID"
+                }
+              }
+            })
+          }
+        }
+      })
+    }else{
+      playlistIndexCounter ++;
+      if(playlistIndexCounter === player.playlists.length){
+        throw "non existant playlist ID"
+      }
+    }
+  })
+
 }
 
 function playlistDuration(id) {
