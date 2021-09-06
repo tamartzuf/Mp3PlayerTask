@@ -85,6 +85,7 @@ function isIdExist(playerSong, id) {
   }
   return false
 }
+
 //return the max id from tae array songs
 function maxId() {
   let max = player.songs[0].id
@@ -106,7 +107,7 @@ function playSong(id) {
   if (!isIdExist(player.songs, id)) throw new Error('ID is not found')
   for (let i = 0; i < player.songs.length; i++) {
     if (player.songs[i].id === id) {
-      console.log(player.playSong(player.songs[i]))
+      player.playSong(player.songs[i])
     }
   }
 }
@@ -153,7 +154,16 @@ function createPlaylist(name, id = newId()) {
 }
 
 function playPlaylist(id) {
-  // your code here
+  if (!isIdExist(player.playlists, id))
+    throw new Error('ID already exist, change the ID or omit it')
+  for (let i = 0; i < player.playlists.length; i++) {
+    if (player.playlists[i].id === id) {
+      for (let j = 0; j < player.playlists[i].songs.length; j++) {
+        playSong(player.playlists[i].songs[j])
+      }
+    }
+  }
+  return id
 }
 
 function editPlaylist(playlistId, songId) {
