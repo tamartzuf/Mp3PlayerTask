@@ -55,6 +55,12 @@ function getMaxId(arr) {
   return max;
 }
 
+function getPlaylist(id) {
+  for(let playlist of player.playlists) {
+    if(playlist.id === id) return playlist;
+  }
+}
+
 const player = {
   songs: [
     {
@@ -152,13 +158,16 @@ function createPlaylist(name, id) {
   } else {
     if(isIdExist(player.playlists, id)) throw 'this id already exist!';
   }
-  // duration = toSeconds(duration);
   player.playlists.push({id, name, songs: []});
   return id;
 }
 
 function playPlaylist(id) {
-  // your code here
+  if(!isIdExist(player.playlists, id)) throw 'this id already exist!';
+  const playlist = getPlaylist(id);
+  for (let i = 0; i < playlist.songs.length; i++) {
+    playSong(playlist.songs[i]);
+  }
 }
 
 function editPlaylist(playlistId, songId) {
