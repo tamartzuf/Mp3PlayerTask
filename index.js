@@ -110,7 +110,7 @@ function removeSong(id) {
   let indexCounter = 0;
     player.songs.forEach(song => {
       if(song.id === id){
-        player.songs.splice(player.songs[indexCounter] ,1);
+        player.songs.splice(indexCounter ,1);
       }else{
         indexCounter ++;
         if(indexCounter === player.songs.length){
@@ -150,20 +150,30 @@ function addSong(title, album, artist, duration, id) {
           });
   }
   idCounter ++;
- duration = secondsToMinutesConvertor(duration);
+  duration = secondsToMinutesConvertor(duration);
   let newSong = {
+    "id" : newSongId,
     "title" : title,
     "album" : album,
     "artist" : artist,
-    "duration" : duration,
-    "id" : newSongId 
+    "duration" : duration
   }
   player.songs.push(newSong);
   return newSongId
 }
 
 function removePlaylist(id) {
-  // your code here
+  let indexCounter = 0;
+  player.playlists.forEach(playlist => {
+    if(playlist.id === id){
+      player.playlists.splice(indexCounter ,1);
+    }else{
+      indexCounter ++;
+    }
+    if(indexCounter === player.playlists.length){
+      throw "Undefined ID"
+    }
+  }) 
 }
 
 function createPlaylist(name, id) {
