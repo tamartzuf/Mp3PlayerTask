@@ -178,7 +178,15 @@ function playPlaylist(id) {
 }
 
 function editPlaylist(playlistId, songId) {
-  // if(!isIdExist(player.playlists, playlistId)) 
+  if(!isIdExist(player.playlists, playlistId)) notExistError();
+  if(!isIdExist(player.songs, songId)) notExistError();
+  const playlist = getPlaylist(playlistId);
+  if(playlist.songs.indexOf(songId) >= 0) {
+    playlist.songs.splice(playlist.songs.indexOf(songId), 1);
+    if(playlist.songs.length === 0) removePlaylist(playlistId);
+  } else {
+    playlist.songs.push(songId);
+  }
 }
 
 function playlistDuration(id) {
