@@ -1,3 +1,15 @@
+/*
+this function gets one parameter seconds
+and return a string value of the minutes
+in 'mm:ss' format.
+*/
+function toMinutes(sec) {
+  let minFormat = ["mm", "ss"];
+  minFormat[1] = sec % 60 < 10 ? "0" + sec % 60: sec % 60;
+  minFormat[0] = sec / 60 < 10 ? "0" + Math.floor(sec / 60): Math.floor(sec / 60);
+  return minFormat.join(':');
+}
+
 const player = {
   songs: [
     {
@@ -48,7 +60,7 @@ const player = {
     { id: 5, name: 'Israeli', songs: [4, 5] },
   ],
   playSong(song) {
-    console.log(/* your code here */)
+    console.log(`Playing ${song.title} from ${song.album} by ${song.artist} | ${toMinutes(song.duration)}.`);
   },
 }
 
