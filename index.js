@@ -28,6 +28,17 @@ function removeSongFromPlaylists(id) {
   }
 }
 
+/*
+this funcion return the max id of an objects array
+*/
+function getMaxId(arr) {
+  let max = 0;
+  for (let obj of arr) {
+    if(obj.id > max) max = obj.id;
+  }
+  return max;
+}
+
 const player = {
   songs: [
     {
@@ -86,6 +97,7 @@ const player = {
 // // let arr = [1,2,3,4];
 // // arr.splice(2,1);
 // // console.log(arr);
+console.log(getMaxId(player.songs))
 
 function playSong(id) {
   let isExist = false;
