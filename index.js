@@ -96,6 +96,11 @@ function maxId() {
   return max
 }
 
+//create new id
+function newId() {
+  return maxId() + 1
+}
+
 function playSong(id) {
   if (!isIdExist(player.songs, id)) throw new Error('ID is not found')
   for (let i = 0; i < player.songs.length; i++) {
@@ -126,7 +131,8 @@ function removeSong(id) {
   }
 }
 
-function addSong(title, album, artist, duration, id) {
+function addSong(title, album, artist, duration, id = newId()) {
+  if (isIdExist(player.songs, id)) throw new Error('ID is already exist')
   player.songs.push({
     title: title,
     album: album,
