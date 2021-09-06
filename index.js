@@ -61,12 +61,27 @@ function getPlaylist(id) {
   }
 }
 
+function getSong(id) {
+  for(let song of player.songs) {
+    if(song.id === id) return song;
+  }
+}
+
 function existError() {
   throw 'this id already exist!';
 }
 function notExistError() {
   throw 'this id does not exist!';
 }
+
+/*
+recursion function that sums the array elements.
+*/
+function sumArr(arr) {
+  if(arr.length === 0) return 0;
+  return arr.pop() + sumArr(arr.slice(0, arr.length));
+}
+
 
 const player = {
   songs: [
@@ -127,6 +142,10 @@ const player = {
 // // arr.splice(2,1);
 // // console.log(arr);
 // console.log(toSeconds("04:19"))
+// console.log(sumArr([242, 213, 270]));
+// console.log(playlistDuration(1));
+// console.log(player.songs[4].album.includes("ll"));
+console.log(searchByQuery("ll"));
 
 function playSong(id) {
   if(!isIdExist(player.songs, id)) notExistError();
@@ -182,7 +201,7 @@ function editPlaylist(playlistId, songId) {
   if(!isIdExist(player.songs, songId)) notExistError();
   const playlist = getPlaylist(playlistId);
   if(playlist.songs.indexOf(songId) >= 0) {
-    playlist.songs.splice(playlist.songs.indexOf(songId), 1);
+    console.log(playlist.songs.splice(playlist.songs.indexOf(songId), 1));
     if(playlist.songs.length === 0) removePlaylist(playlistId);
   } else {
     playlist.songs.push(songId);
@@ -190,11 +209,33 @@ function editPlaylist(playlistId, songId) {
 }
 
 function playlistDuration(id) {
-  // your code here
+  if(!isIdExist(player.playlists, id)) notExistError();
+  const playlist = getPlaylist(id);
+  const secondsArr = [];
+  for(let songId of playlist.songs) {
+    secondsArr.push(getSong(songId).duration);
+  }
+  return sumArr(secondsArr);
 }
 
 function searchByQuery(query) {
-  // your code here
+  const obj = {songs: [], playlist: []};
+  for(let song of player.songs) {
+    if(song.title.includes(query)) {
+      obj.songs.push(song);
+      continue; //continue to the next song
+    }
+    if(song.album.includes(query)) {
+      obj.songs.push(song);
+      continue; //continue to the next song
+    }
+    if(song.artist.includes(query)) {
+      obj.songs.push(song);
+      continue; //continue to the next song
+    }
+  }
+  // obj.songs.sort();
+  return obj;
 }
 
 function searchByDuration(duration) {
