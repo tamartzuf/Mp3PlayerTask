@@ -86,7 +86,7 @@ function removeSong(id) {
   }
   for (let j = 0; j < player.playlists.length; j++) {
     //remove id from playlist
-    for (let k = 0; k < player.playlists.songs.length; k++) {
+    for (let k = 0; k < player.playlists[j].songs.length; k++) {
       if (player.playlists[j].songs[k] === id) {
         player.playlists[j].songs.splice(k, 1)
       }
