@@ -191,16 +191,6 @@ const player = {
   },
 }
 
-/* CHECKING deleteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee lineeeeeeeeeeeeeeee*/
-// // let arr = [1,2,3,4];
-// // arr.splice(2,1);
-// // console.log(arr);
-// console.log(toSeconds("04:19"))
-// console.log(sumArr([242, 213, 270]));
-// console.log(playlistDuration(1));
-// console.log(player.songs[4].album.includes("ll"));
-// console.log(searchByQuery("ll"));
-
 function playSong(id) {
   if(!isIdExist(player.songs, id)) notExistError();
   for(let song of player.songs) {
