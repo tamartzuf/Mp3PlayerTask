@@ -167,7 +167,24 @@ function playPlaylist(id) {
 }
 
 function editPlaylist(playlistId, songId) {
-  // your code here
+  let count = 0
+  if (!isIdExist(player.songs, songId))
+    throw new Error('ID is not exist, change the ID or omit it')
+  if (!isIdExist(player.playlists, playlistId))
+    throw new Error('ID is not exist, change the ID or omit it')
+  for (let i = 0; i < player.playlists.length; i++) {
+    for (let j = 0; j < player.playlists[i].songs.length; j++) {
+      //console.log(player.playlists[i].songs[j])
+      if (player.playlists[i].songs[j] === songId) {
+        count++
+        removeSong(songId)
+      }
+    }
+    if (count === 0) {
+      player.playlists[i].songs.push(songId)
+    }
+    count = 0
+  }
 }
 
 function playlistDuration(id) {
