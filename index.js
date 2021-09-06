@@ -7,17 +7,25 @@ function secondsToMinutesConvertor(songDuration){
   let seconds = 0;
   let lengthFormat = 0;
   minutes = Math.floor(durationInMinutes);
-  if(minutes < 10){
-    minutes = "0" + minutes.toString();
+  if(minutes === 0){
+    minutes = "00"
   }else{
-    minutes = minutes.tostring();
-  }
+      if(minutes < 10){
+        minutes = "0" + minutes.toString();
+      }else{
+        minutes = minutes.toString();
+      }
+}
   seconds = (Math.round((durationInMinutes - minutes) * 60));
-  if( seconds < 10){
-    seconds = "0" + seconds.toString();
-  }else{
-    seconds = seconds.toString();
-  }
+  if(seconds === 0){
+    seconds = "00"
+  }else {
+      if( seconds < 10){
+        seconds = "0" + seconds.toString();
+      }else{
+        seconds = seconds.toString();
+      }
+}
   lengthFormat = minutes + ":" + seconds
   return lengthFormat
 }
@@ -101,20 +109,57 @@ playSong(5);
 function removeSong(id) {
   let indexCounter = 0;
     player.songs.forEach(song => {
-      indexCounter ++;
       if(song.id === id){
         player.songs.splice(player.songs[indexCounter] ,1);
       }else{
         indexCounter ++;
+        if(indexCounter === player.songs.length){
+          throw "Undefined ID"
+        }
       }
-      if(indexCounter === player.songs.length){
-        throw "Undefined ID"
-      }
+    })
+    player.playlists.forEach(playlist => {
+      let playlistIndexCounter = 0;
+      let songIndexCounter = 0;
+      playlist.songs.forEach(song => {
+        if (song === id){
+           player.playlists[playlistIndexCounter].songs.splice(songIndexCounter, 1);
+        }else{
+          songIndexCounter ++;
+        }
+      })
     })
 }
 
+let idCounter = 8;
 function addSong(title, album, artist, duration, id) {
-  // your code here
+  let newSongId = 0;
+  let indexCounter = 0;
+  if(id == undefined){
+    newSongId = idCounter;
+  }else{
+      player.songs.forEach(song => {
+            if(song.id === id){
+              throw "taken ID"
+            }else{
+                indexCounter ++;
+                if(indexCounter === player.songs.length){
+                newSongId = id;
+                }
+          }
+          });
+  }
+  idCounter ++;
+ duration = secondsToMinutesConvertor(duration);
+  let newSong = {
+    "title" : title,
+    "album" : album,
+    "artist" : artist,
+    "duration" : duration,
+    "id" : newSongId 
+  }
+  player.songs.push(newSong);
+  return newSongId
 }
 
 function removePlaylist(id) {
