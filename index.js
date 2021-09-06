@@ -86,15 +86,6 @@ const player = {
 // // let arr = [1,2,3,4];
 // // arr.splice(2,1);
 // // console.log(arr);
-// console.log(player.playlists);
-// playSong(5);
-// console.log(player.playlists);
-// console.log(player.songs);
-// removeSong(2);
-// removeSong(5);
-// console.log(player.playlists);
-// console.log(player.songs);
-// playSong(5);
 
 function playSong(id) {
   let isExist = false;
