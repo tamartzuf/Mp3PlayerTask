@@ -286,6 +286,12 @@ function createPlaylistByArtist(artist){
   return playlist
 }
 
+function repeatSong(repeats,songId){
+  for(let i=1; i<=repeats; i++){
+    playSong(songId)
+  }
+}
+
 module.exports = {
   player,
   playSong,
