@@ -82,6 +82,14 @@ function getSongById(id){
   
   throw new Error("No such ID");
 }
+function getPlaylistById(id) {
+  for (let i = 0; i < player.playlists.length; i++) {
+    if (player.playlists[i].id == id)
+      return player.playlists[i]
+  }
+
+  throw new Error("No such ID");
+}
 
 function idExist(id) {
   for (let i = 0; i < player.songs.length; i++) {
@@ -127,7 +135,8 @@ function addSong(title, album, artist, duration, id = Math.floor(Math.random() *
 }
 
 function removePlaylist(id) {
-  // your code here
+  let playlistIndex = player.playlists.indexOf(getPlaylistById(id))
+  player.playlists.splice(playlistIndex, 1);
 }
 
 function createPlaylist(name, id) {
