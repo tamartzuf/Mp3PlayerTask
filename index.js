@@ -111,6 +111,27 @@ function oppositDuration(duration) {
   return minutes + seconds
 }
 
+//Get a playlist id and return
+function findPlaylistId(id) {
+  let correctPlaylist
+  for (let i = 0; i < player.playlists.length; i++) {
+    if (id === player.playlists[i].id) correctPlaylist = player.playlists[i]
+  }
+  return correctPlaylist
+}
+
+//this function remove a song only from the playlist and not from the songs object
+function removeSongsFromPlaylist(id) {
+  for (let j = 0; j < player.playlists.length; j++) {
+    // remove from playlists
+    for (let k = 0; k < player.playlists[j].songs.length; k++) {
+      if (player.playlists[j].songs[k] === id) {
+        player.playlists[j].songs.splice(k, 1)
+      }
+    }
+  }
+}
+
 ///////////////////////////////////////////////////////////////////////////
 
 function playSong(id) {
@@ -177,23 +198,25 @@ function playPlaylist(id) {
 }
 
 function editPlaylist(playlistId, songId) {
-  let count = 0
   if (!isIdExist(player.songs, songId))
-    throw new Error('ID is not exist, change the ID or omit it')
+    throw new Error("ID isn't exist, change the ID")
   if (!isIdExist(player.playlists, playlistId))
-    throw new Error('ID is not exist, change the ID or omit it')
-  for (let i = 0; i < player.playlists.length; i++) {
-    for (let j = 0; j < player.playlists[i].songs.length; j++) {
-      //console.log(player.playlists[i].songs[j])
-      if (player.playlists[i].songs[j] === songId) {
-        count++
-        removeSong(songId)
-      }
+    throw new Error("ID isn't exist, change the ID")
+  let correctPlaylist = findPlaylistId(playlistId)
+  //runs on the playlists
+  for (let j = 0; j < correctPlaylist.songs.length; j++) {
+    //runs on the songs array in the playlist
+    if (songId === correctPlaylist.songs[j]) {
+      //If the song ID exists in the playlist
+      removeSongsFromPlaylist(songId)
+      //removes it
+    } else {
+      correctPlaylist.songs.push(songId)
     }
-    if (count === 0) {
-      player.playlists[i].songs.push(songId)
+    if (correctPlaylist.songs.length === 0) {
+      //If it was the only song in the playlist
+      removePlaylist(correctPlaylist.id)
     }
-    count = 0
   }
 }
 
@@ -217,7 +240,13 @@ function searchByQuery(query) {
 }
 
 function searchByDuration(duration) {
-  // your code here
+  let min = Math.abs(player.songs[0].duration - oppositDuration(duration))
+  for (let i = 1; i < player.songs.length; i++) {
+    if (Math.abs(oppositDuration(duration) - player.songs[i].duration) < min) {
+      min = player.songs[i]
+    }
+  }
+  return min
 }
 
 module.exports = {
