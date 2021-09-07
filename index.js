@@ -101,6 +101,16 @@ function maxId() {
 function newId() {
   return maxId() + 1
 }
+
+//converting mm:ss to seconds
+function oppositDuration(duration) {
+  duration = duration.split(':')
+  console.log(duration)
+  let minutes = parseInt(duration[0]) * 60
+  let seconds = parseInt(duration[1])
+  return minutes + seconds
+}
+
 ///////////////////////////////////////////////////////////////////////////
 
 function playSong(id) {
@@ -135,7 +145,7 @@ function removeSong(id) {
 
 function addSong(title, album, artist, duration, id = newId()) {
   if (isIdExist(player.songs, id)) throw new Error('ID is already exist')
-  duration = durationFormat(duration)
+  duration = oppositDuration(duration)
   player.songs.push({ title, album, artist, duration, id })
   return id
 }
@@ -149,7 +159,7 @@ function removePlaylist(id) {
 
 function createPlaylist(name, id = newId()) {
   if (isIdExist(player.playlists, id)) throw new Error('ID is already exist')
-  player.playlists.push({ name, id })
+  player.playlists.push({ name, id, songs: [] })
   return id
 }
 
