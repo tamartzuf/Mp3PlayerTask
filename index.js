@@ -52,61 +52,6 @@ const player = {
   },
 }
 
-function convertDuration(duration) {
-  let min = Math.floor(duration / 60);
-  let sec = duration % 60;
-
-  if(min < 10){
-    min = "0" + String(min);
-  }
-  if (sec < 10) {
-    sec = "0" + String(sec);
-  }
-
-  return min+':'+sec
-}
-
-function convertToSeconds(duration){
-  let arr = duration.split(":")
-  let min = parseInt(arr[0]) * 60
-  let sec = parseInt(arr[1])
-  
-  return min+sec
-}
-
-function getSongById(id){
-  for (let i = 0; i < player.songs.length; i++) {
-    if(player.songs[i].id == id)
-      return player.songs[i]
-  }
-  
-  throw new Error("No such ID");
-}
-
-function getPlaylistById(id) {
-  for (let i = 0; i < player.playlists.length; i++) {
-    if (player.playlists[i].id == id)
-      return player.playlists[i]
-  }
-
-  throw new Error("No such ID");
-}
-
-function songIdExist(id) {
-  for (let i = 0; i < player.songs.length; i++) {
-    if (player.songs[i].id == id)
-      return true
-  }
-  return false
-}
-function playlistIdExist(id) {
-  for (let i = 0; i < player.playlists.length; i++) {
-    if (player.playlists[i].id == id)
-      return true
-  }
-  return false
-}
-
 function playSong(id) {
   let song = getSongById(id);
 
@@ -164,15 +109,6 @@ function playPlaylist(id) {
   for(let i=0; i<playlist.songs.length; i++){
     playSong(playlist.songs[i])
   }
-}
-
-function findSongInPlaylist(songId, playlistId){
-  let playlist = getPlaylistById(playlistId)
-  for (let index = 0; index < playlist.songs.length; index++) {
-    if(playlist.songs[index] == songId)
-      return index
-  }
-    return -1
 }
 
 function editPlaylist(playlistId, songId) {
@@ -245,7 +181,99 @@ function searchByQuery(query) {
 }
 
 function searchByDuration(duration) {
-  // your code here
+  let time = convertToSeconds(duration);
+  let closestObj;
+  let deltaTime;
+
+  //set delta time according to bigger delta 
+  if (time > player.songs[0].duration){
+    deltaTime = time;
+  }
+  else{
+    deltaTime = player.songs[0].duration;
+  }
+
+  //search in songs
+  for(let song of player.songs){
+    if(Math.abs(time - song.duration) < deltaTime){
+      closestObj = song;
+      deltaTime = Math.abs(time - song.duration);
+    }
+  }
+
+  //search in playlists
+  for (let playlist of player.playlists) {
+    if (Math.abs(time - playlistDuration(playlist.id)) < deltaTime) {
+      closestObj = playlist;
+      deltaTime = Math.abs(time - playlistDuration(playlist.id));
+    }
+  }
+
+  return closestObj
+}
+
+function convertDuration(duration) {
+  let min = Math.floor(duration / 60);
+  let sec = duration % 60;
+
+  if (min < 10) {
+    min = "0" + String(min);
+  }
+  if (sec < 10) {
+    sec = "0" + String(sec);
+  }
+
+  return min + ':' + sec
+}
+
+function convertToSeconds(duration) {
+  let arr = duration.split(":")
+  let min = parseInt(arr[0]) * 60
+  let sec = parseInt(arr[1])
+
+  return min + sec
+}
+
+function getSongById(id) {
+  for (let i = 0; i < player.songs.length; i++) {
+    if (player.songs[i].id == id)
+      return player.songs[i]
+  }
+
+  throw new Error("No such ID");
+}
+
+function getPlaylistById(id) {
+  for (let i = 0; i < player.playlists.length; i++) {
+    if (player.playlists[i].id == id)
+      return player.playlists[i]
+  }
+
+  throw new Error("No such ID");
+}
+
+function songIdExist(id) {
+  for (let i = 0; i < player.songs.length; i++) {
+    if (player.songs[i].id == id)
+      return true
+  }
+  return false
+}
+function playlistIdExist(id) {
+  for (let i = 0; i < player.playlists.length; i++) {
+    if (player.playlists[i].id == id)
+      return true
+  }
+  return false
+}
+
+function findSongInPlaylist(songId, playlistId) {
+  let playlist = getPlaylistById(playlistId)
+  for (let index = 0; index < playlist.songs.length; index++) {
+    if (playlist.songs[index] == songId)
+      return index
+  }
+  return -1
 }
 
 
