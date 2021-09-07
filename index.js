@@ -166,8 +166,33 @@ function playPlaylist(id) {
   }
 }
 
+function findSongInPlaylist(songId, playlistId){
+  let playlist = getPlaylistById(playlistId)
+  for (let index = 0; index < playlist.songs.length; index++) {
+    if(playlist.songs[index] == songId)
+      return index
+  }
+    return -1
+}
+
 function editPlaylist(playlistId, songId) {
-  // your code here
+  let songIndex = findSongInPlaylist(songId, playlistId)
+  let playlist = getPlaylistById(playlistId)
+
+  if(songIdExist(songId) && playlistIdExist(playlistId)){ //checks if both song and playlist exist
+    if(songIndex == -1) {                         //checks if the song is not in the list
+      playlist.songs.push(songId);
+    }
+    else if(playlist.songs.length > 1){         //checks if the song is not the only song in the playlist
+      playlist.songs.splice(songIndex,1)
+    }
+    else{
+      removePlaylist(playlist.id)
+    }
+  }
+  else{
+    throw new Error("No such ID");
+  }
 }
 
 function playlistDuration(id) {
