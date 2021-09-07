@@ -132,6 +132,43 @@ function removeSongsFromPlaylist(id) {
   }
 }
 
+//gets song duartion return array of [closet-duration-seconds,closet-duration-playlist]
+function arrLengthmPlaylist(duration) {
+  let arr = []
+  let minDuration = duration,
+    index = 0
+  for (let i = 0; i < player.playlists.length; i++) {
+    if (
+      minDuration >
+      Math.abs(duration - playlistDuration(player.playlists[i].id))
+    ) {
+      minDuration = Math.abs(
+        duration - playlistDuration(player.playlists[i].id)
+      )
+      index = i
+    }
+  }
+  arr.push(minDuration)
+  arr.push(player.playlists[index])
+  return arr
+}
+
+//gets song duartion return array of [closet-duration-seconds,closet-duration-song]
+function arrLengthSongs(duration) {
+  let arr = []
+  let minDuration = duration,
+    index = 0 //{id: 3,title: "Thunderstruck", album: "The Razors Edge"}
+  for (let i = 0; i < player.songs.length; i++) {
+    if (minDuration > Math.abs(duration - player.songs[i].duration)) {
+      minDuration = Math.abs(duration - player.songs[i].duration)
+      index = i
+    }
+  }
+  arr.push(minDuration)
+  arr.push(player.songs[index])
+  return arr
+}
+
 ///////////////////////////////////////////////////////////////////////////
 
 function playSong(id) {
@@ -240,13 +277,12 @@ function searchByQuery(query) {
 }
 
 function searchByDuration(duration) {
-  let min = Math.abs(player.songs[0].duration - oppositDuration(duration))
-  for (let i = 1; i < player.songs.length; i++) {
-    if (Math.abs(oppositDuration(duration) - player.songs[i].duration) < min) {
-      min = player.songs[i]
-    }
-  }
-  return min
+  duration = oppositDuration(duration)
+  let arrSongs = arrLengthSongs(duration)
+  let arrPlaylist = arrLengthmPlaylist(duration)
+  console.log(arrSongs)
+  console.log(arrPlaylist)
+  return arrSongs[0] < arrPlaylist[0] ? arrSongs[1] : arrPlaylist[1]
 }
 
 module.exports = {
