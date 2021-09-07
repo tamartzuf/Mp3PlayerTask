@@ -273,7 +273,30 @@ function playlistDuration(id) {
 }
 
 function searchByQuery(query) {
-  // your code here
+  const results = { songs: [], playlists: [] }
+  let querylower = query.toLowerCase()
+  for (let i = 0; i < player.songs.length; i++) {
+    if (
+      player.songs[i].album.toLowerCase().includes(querylower) ||
+      player.songs[i].artist.toLowerCase().includes(querylower) ||
+      player.songs[i].title.toLowerCase().includes(querylower)
+    ) {
+      results.songs.push(player.songs[i])
+      results.songs.sort((a, b) => {
+        if (a['title'].toLowerCase() < b['title'].toLowerCase()) return -1
+      })
+    }
+  }
+
+  for (let j = 0; j < player.playlists.length; j++) {
+    if (player.playlists[j].name.toLowerCase().includes(querylower)) {
+      results.playlists.push(player.playlists[j])
+      results.playlists.sort((a, b) => {
+        if (a['name'].toLowerCase() < b['name'].toLowerCase()) return -1
+      })
+    }
+  }
+  return results
 }
 
 function searchByDuration(duration) {
