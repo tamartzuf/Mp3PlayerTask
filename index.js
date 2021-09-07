@@ -305,9 +305,18 @@ function searchByQuery(query) {
     "playlists" : matchingPlaylists
   }
 }
-
+// search by duratiopn function
 function searchByDuration(duration) {
-  // your code here
+  let totalTime = convertToseconds(duration);
+  let closestTime = Math.abs(totalTime -  player.songs[0].duration);
+  let closestSong = player.songs[0];
+  player.songs.forEach(song =>{
+      if(Math.abs(totalTime - song.duration) < closestTime){
+          closestTime = Math.abs(totalTime - song.duration);
+          closestSong = song;
+      }
+  })
+  return closestSong;
 }
 
 module.exports = {
