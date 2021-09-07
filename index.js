@@ -160,7 +160,10 @@ function createPlaylist(name, id = Math.floor(Math.random() * 1000) + 1) {
 }
 
 function playPlaylist(id) {
-  // your code here
+  let playlist = getPlaylistById(id);
+  for(let i=0; i<playlist.songs.length; i++){
+    playSong(playlist.songs[i])
+  }
 }
 
 function editPlaylist(playlistId, songId) {
