@@ -66,6 +66,14 @@ function convertDuration(duration) {
   return min+':'+sec
 }
 
+function convertToSeconds(duration){
+  let arr = duration.split(":")
+  let min = parseInt(arr[0]) * 60
+  let sec = parseInt(arr[1])
+  
+  return min+sec
+}
+
 function getSongById(id){
   for (let i = 0; i < player.songs.length; i++) {
     if(player.songs[i].id == id)
@@ -73,6 +81,14 @@ function getSongById(id){
   }
   
   throw new Error("No such ID");
+}
+
+function idExist(id) {
+  for (let i = 0; i < player.songs.length; i++) {
+    if (player.songs[i].id == id)
+      return true
+  }
+  return false
 }
 
 function playSong(id) {
@@ -96,8 +112,18 @@ function removeSong(id) {
   }
 }
 
-function addSong(title, album, artist, duration, id) {
-  // your code here
+function addSong(title, album, artist, duration, id = Math.floor(Math.random() * 1000) + 1) {
+  if(!idExist(id)){
+    player.songs.push({id: id,
+                    title: title,
+                    album: album,
+                    artist: artist,
+                    duration: convertToSeconds(duration)})
+      return id
+      }
+  else{
+    throw new Error("This ID already exists")
+  }
 }
 
 function removePlaylist(id) {
