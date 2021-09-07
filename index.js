@@ -87,6 +87,33 @@ function getPlaylistById(id){
     })
     return playlistById[0];
   }
+  //closest song or playlist function
+function initialClosest (songsOrPlaylists , totalTime){
+  if(songsOrPlaylists === "playlists"){
+      return Math.abs(totalTime -  playlistDuration(player.playlists[0]["id"]))
+  }else{
+     return Math.abs(totalTime - player[songsOrPlaylists][0].duration)
+  }
+}
+//find closest song
+function findClosest(songsOrPlaylists, closestTime, totalTime){
+  let closest = player[songsOrPlaylists][0];
+  player[songsOrPlaylists].forEach(song =>{
+      if(songsOrPlaylists === "playlists"){
+          let songDuration = playlistDuration(song["id"]);
+          if(Math.abs(totalTime - songDuration) < closestTime){
+              closestTime = Math.abs(totalTime - songDuration);
+              closest = song;
+          }
+      }else{
+          if(Math.abs(totalTime - song.duration) < closestTime){
+              closestTime = Math.abs(totalTime - song.duration);
+              closest = song;
+          }
+      } 
+  })
+  return closest;
+}
 // main work
 const player = {
   songs: [
@@ -143,7 +170,6 @@ const player = {
     return("Playing " + song.title + " from " + song.album + " by " + song.artist + " | " + song.duration + ".")
   },
 }
-
 // playSong outside function
 function playSong(id) {
  console.log(player.playSong(id))
@@ -265,7 +291,7 @@ function editPlaylist(playlistId, songId) {
   })
 
 }
-
+// playlistDuration function
 function playlistDuration(id) {
    let requestedPlaylist = getPlaylistById(id);
    let songsLengthsArray = requestedPlaylist.songs.map(song => {
@@ -308,17 +334,16 @@ function searchByQuery(query) {
 // search by duratiopn function
 function searchByDuration(duration) {
   let totalTime = convertToseconds(duration);
-  let closestTime = Math.abs(totalTime -  player.songs[0].duration);
-  let closestSong = player.songs[0];
-  player.songs.forEach(song =>{
-      if(Math.abs(totalTime - song.duration) < closestTime){
-          closestTime = Math.abs(totalTime - song.duration);
-          closestSong = song;
-      }
-  })
-  return closestSong;
+  let closestSongtTime = initialClosest("songs", totalTime);
+  let closestPlaylistTime = initialClosest("playlists", totalTime);
+  let closestSong = findClosest("songs", closestSongtTime, totalTime);
+  let closestPlaylist = findClosest("playlists", closestPlaylistTime, totalTime);
+   if(closestSongtTime > closestPlaylistTime){
+       return closestPlaylist;
+   }else{
+    return closestSong;
+   }
 }
-
 module.exports = {
   player,
   playSong,
