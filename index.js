@@ -292,6 +292,12 @@ function repeatSong(repeats,songId){
   }
 }
 
+function repeatPlaylist(repeats,playlistId){
+  for(let i=1; i<=repeats; i++){
+    playPlaylist(playlistId)
+  }
+}
+
 module.exports = {
   player,
   playSong,
