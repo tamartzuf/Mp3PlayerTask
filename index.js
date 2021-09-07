@@ -196,7 +196,13 @@ function editPlaylist(playlistId, songId) {
 }
 
 function playlistDuration(id) {
-  // your code here
+  let playlist = getPlaylistById(id)
+  let sum = 0
+
+  for(let i=0; i<playlist.songs.length; i++){
+    sum += getSongById(playlist.songs[i]).duration
+  }
+  return sum
 }
 
 function searchByQuery(query) {
