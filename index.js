@@ -276,6 +276,15 @@ function findSongInPlaylist(songId, playlistId) {
   return -1
 }
 
+function createPlaylistByArtist(artist){
+  let playlist = getPlaylistById(createPlaylist(`${artist} Playlist`))
+  for(let song of player.songs){
+    if(song.artist == artist){
+      playlist.songs.push(song)
+    }
+  }
+  return playlist
+}
 
 module.exports = {
   player,
