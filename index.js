@@ -82,6 +82,7 @@ function getSongById(id){
   
   throw new Error("No such ID");
 }
+
 function getPlaylistById(id) {
   for (let i = 0; i < player.playlists.length; i++) {
     if (player.playlists[i].id == id)
@@ -91,9 +92,16 @@ function getPlaylistById(id) {
   throw new Error("No such ID");
 }
 
-function idExist(id) {
+function songIdExist(id) {
   for (let i = 0; i < player.songs.length; i++) {
     if (player.songs[i].id == id)
+      return true
+  }
+  return false
+}
+function playlistIdExist(id) {
+  for (let i = 0; i < player.playlists.length; i++) {
+    if (player.playlists[i].id == id)
       return true
   }
   return false
@@ -121,7 +129,7 @@ function removeSong(id) {
 }
 
 function addSong(title, album, artist, duration, id = Math.floor(Math.random() * 1000) + 1) {
-  if(!idExist(id)){
+  if(!songIdExist(id)){
     player.songs.push({id: id,
                     title: title,
                     album: album,
@@ -139,8 +147,16 @@ function removePlaylist(id) {
   player.playlists.splice(playlistIndex, 1);
 }
 
-function createPlaylist(name, id) {
-  // your code here
+function createPlaylist(name, id = Math.floor(Math.random() * 1000) + 1) {
+  if (!playlistIdExist(id)){
+    player.playlists.push({id: id,
+                           name: name,
+                           songs:[]});
+    return id;
+  }
+  else{
+    throw new Error("This ID already exists")
+  }
 }
 
 function playPlaylist(id) {
