@@ -114,6 +114,20 @@ function findClosest(songsOrPlaylists, closestTime, totalTime){
   })
   return closest;
 }
+//check for non existent ID
+function IDchecker(id, playlistOrSong){
+  let indexCounter = 0;
+  player[playlistOrSong].forEach(object => {
+    if (object.id === id){
+      indexCounter = -1;
+    } else{
+      indexCounter ++;
+      if(indexCounter === player[playlistOrSong].length){
+        throw "non existent id"
+      }
+    }
+  })
+}
 // main work
 const player = {
   songs: [
@@ -253,43 +267,38 @@ function playPlaylist(id) {
 }
 
 //edit playlist function
-function editPlaylist(playlistId, songId) {
+function editPlaylist(playlistId, songId){
+  IDchecker(playlistId, "playlists");
+  IDchecker(songId, "songs");
   let playlistIndexCounter = 0;
   player.playlists.forEach(playlist =>{
-    let songsIndexCounter = 0;
-    if(playlist.id === playlistId){
-      playlist.songs.forEach(song => {
-        if(songId === song){
-           if(playlist.songs.length === 1){
-             player.playlists.splice(playlistIndexCounter, 1)
-           }else{
-             playlist.songs.splice(songsIndexCounter, 1);
-           }
-        }else{
-          songsIndexCounter ++;
-          if(songsIndexCounter === playlist.songs.length){
-            let indexCounter = 0;
-            player.songs.forEach(song => {
-              if(song.id === songId){
-                player.playlists[playlistIndexCounter].songs.push(songId);
-              }else{
-                indexCounter ++;
-                if(indexCounter === player.songs.length){
-                  throw "non existant song ID"
-                }
-              }
-            })
-          }
+  let songsIndexCounter = 0;
+  if(playlist.id === playlistId){
+    playlist.songs.forEach(song => {
+      if(songId === song){
+         if(playlist.songs.length === 1){
+           player.playlists.splice(playlistIndexCounter, 1)
+         }else{
+           playlist.songs.splice(songsIndexCounter, 1);
+         }
+      }else{
+        songsIndexCounter ++;
+        if(songsIndexCounter === playlist.songs.length){
+          let indexCounter = 0;
+          player.songs.forEach(song => {
+            if(song.id === songId){
+              player.playlists[playlistIndexCounter].songs.push(songId);
+            }else{
+              indexCounter ++;
+            }
+          })
         }
-      })
-    }else{
-      playlistIndexCounter ++;
-      if(playlistIndexCounter === player.playlists.length){
-        throw "non existant playlist ID"
       }
-    }
-  })
-
+    })
+  }else{
+    playlistIndexCounter ++;
+  }
+})
 }
 // playlistDuration function
 function playlistDuration(id) {
