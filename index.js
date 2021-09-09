@@ -48,13 +48,31 @@ const player = {
     { id: 5, name: 'Israeli', songs: [4, 5] },
   ],
   playSong(song) {
-    console.log(/* your code here */)
+      let mm;
+      let ss;
+      let found;
+      this.songs.forEach(element => { // check if the element of the right id exist//
+      if(element.id == song){
+        mm = Math.floor(element.duration/60); // calculate the minutes//
+        if(mm<10)
+           mm = "0"+ mm;
+        ss = element.duration % 60; // calculate the second//
+        found = element;
+      }
+    });
+    try{
+      console.log(`Playing ${found.title} from ${found.album} by ${found.artist} | ${mm}:${ss}.`);
+   }
+   catch(error){ 
+     console.log("this song is unavailable");
+   }
   },
-}
 
-function playSong(id) {
-  // your code here
 }
+function playSong(id) {
+  player.playSong(id);
+}
+playSong(33);
 
 function removeSong(id) {
   // your code here
@@ -105,3 +123,4 @@ module.exports = {
   searchByQuery,
   searchByDuration,
 }
+
