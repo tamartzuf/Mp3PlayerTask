@@ -95,8 +95,6 @@ if (arguments.length < 5 || id === undefined){
   player.songs.forEach(element => {
     id += element.id;
   });
-
-
 }
 
 player.songs.forEach(element => {
@@ -116,12 +114,18 @@ var newSong = {
 };
 
   player.songs.push(newSong);
-
   return id;
 }
 
 function removePlaylist(id) {
-  // your code here
+  var wantedplay = player.playlists.find(res => res.id == id);
+
+  let index = player.playlists.indexOf(wantedplay);
+  if(index ===-1){
+    throw new Error("ID not found");
+  }
+
+  player.playlists.splice(index,1);
 }
 
 function createPlaylist(name, id) {
@@ -163,6 +167,3 @@ module.exports = {
 }
 
 
-function Main(){
-  player.playSong(1);
-}
