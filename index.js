@@ -89,7 +89,35 @@ function removeSong(id) {
 
 
 function addSong(title, album, artist, duration, id) {
-  // your code here
+
+if (arguments.length < 5 || id === undefined){
+  var id = 1;
+  player.songs.forEach(element => {
+    id += element.id;
+  });
+
+
+}
+
+player.songs.forEach(element => {
+  if(element.id === id){
+    throw new Error("the ID is taken");
+  }
+});
+
+durationArr=duration.split(":");
+duration=parseInt(durationArr[0])*60+parseInt(durationArr[1]);
+var newSong = {
+ id: id,
+ title: title,
+ album: album,
+ artist: artist,
+ duration: duration,
+};
+
+  player.songs.push(newSong);
+
+  return id;
 }
 
 function removePlaylist(id) {
