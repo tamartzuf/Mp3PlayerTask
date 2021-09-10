@@ -266,7 +266,7 @@ function searchByQuery(query) {
   }
   return results
 }
-/*
+
 
 function searchByDuration(duration) {
   duration = oppDuration(duration) //convert from mm:ss format to seconds
@@ -314,7 +314,7 @@ function arrLengthPlaylist(duration) {
   return arr
 }
 
-*/
+
 
 // do not change below this line
 
