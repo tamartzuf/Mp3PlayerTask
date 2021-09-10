@@ -238,7 +238,7 @@ function findPlaylistById(id) {
   return correctPlaylist
 }
 
-/*
+
 function searchByQuery(query) {
   let tempQuery = query.toUpperCase()
   const results = { songs: [], playlists: [] }
@@ -266,6 +266,7 @@ function searchByQuery(query) {
   }
   return results
 }
+/*
 
 function searchByDuration(duration) {
   duration = oppDuration(duration) //convert from mm:ss format to seconds
