@@ -149,7 +149,15 @@ function createPlaylist(name, id) {
 }
 
 function playPlaylist(id) {
-  // your code here
+ var wantedPlay=player.playlists.find(element=> element.id==id) ;
+var index = player.playlists.indexOf(wantedPlay);
+
+ if(index===-1)
+ {
+   throw new Error("ID is not exist");
+ }
+wantedPlay.songs.forEach(element => playSong(element));
+
 }
 
 function editPlaylist(playlistId, songId) {
