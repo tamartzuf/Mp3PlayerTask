@@ -48,9 +48,30 @@ const player = {
     { id: 5, name: 'Israeli', songs: [4, 5] },
   ],
   playSong(song) {
-    console.log(/* your code here */)
+    console.log(
+      "Playing " + song.title 
+      +" from " + song.album 
+      + " by " + song.artist 
+      + " | " 
+      + durationFormat(song.duration) 
+      +".")
   },
 }
+
+// creating a function that returns a song duration in the required format
+function durationFormat(duration){
+  let minutes = Math.floor(duration / 60);
+  let seconds = duration % 60;
+  if(minutes < 10 && seconds < 10)
+    return "0"+minutes+":"+"0"+seconds;
+
+    else if (minutes < 10) return "0"+minutes+":"+seconds;
+         else if (seconds < 10) return minutes+":0"+seconds;
+              else return minutes+":"+seconds;
+
+
+}
+
 
 function playSong(id) {
   // your code here
@@ -91,6 +112,9 @@ function searchByQuery(query) {
 function searchByDuration(duration) {
   // your code here
 }
+
+
+// do not change below this line
 
 module.exports = {
   player,
