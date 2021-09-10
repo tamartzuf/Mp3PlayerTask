@@ -48,17 +48,45 @@ const player = {
     { id: 5, name: 'Israeli', songs: [4, 5] },
   ],
   playSong(song) {
-    console.log(/* your code here */)
+    console.log(`Playing ${song.title} from ${song.album} by ${song.artist} | ${convertDuration(song.duration)}.`) 
   },
 }
-
-function playSong(id) {
-  // your code here
+function convertDuration(duration)
+{
+  let minutes=Math.floor(duration/60);
+  let seconds=duration%60;
+  if(minutes<10)
+    minutes="0"+minutes;
+  if(seconds<10)
+    seconds="0"+seconds;
+  return minutes+":"+seconds;
 }
+function playSong(id) 
+{
+ 
+    var wantedSong = player.songs.find(res => res.id == id);
+    if(wantedSong===null){
+      throw new Error("ID not found");
+    }
+    player.playSong(wantedSong);
+
+}
+
 
 function removeSong(id) {
-  // your code here
+  var wantedSong = player.songs.find(res => res.id == id);
+
+  let index = player.songs.indexOf(wantedSong);
+  if(index ===-1){
+    throw new Error("ID not found");
+  }
+  player.songs.splice(index,1);
+  player.playlists.forEach(element => {
+    let indexpl = element.songs.indexOf(id);
+    element.songs.splice(indexpl, 1);
+  });
 }
+
 
 function addSong(title, album, artist, duration, id) {
   // your code here
@@ -104,4 +132,9 @@ module.exports = {
   playlistDuration,
   searchByQuery,
   searchByDuration,
+}
+
+
+function Main(){
+  player.playSong(1);
 }
