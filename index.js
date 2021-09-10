@@ -118,7 +118,7 @@ for (let x = 0; x < player.playlists[j].songs.length; x++) {
   
 }
 
-/*
+
 // adding a function that returns a new id
 function newId(arr){
   let max = arr[0];
@@ -147,7 +147,7 @@ function addSong(title, album, artist, duration, id = newId(player.songs)) {
  player.songs.push({title,album,artist,duration,id});
  return id;
 }
-*/
+
 
 function removePlaylist(id) {
   // your code here
