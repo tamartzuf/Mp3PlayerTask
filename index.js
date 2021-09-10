@@ -173,7 +173,17 @@ function createPlaylist(name, id = newId(player.playlists)) {
 
 
 function playPlaylist(id) {
+  if (!checkId(player.playlists, id)){
+    throw "ID doesn't exist."}
 
+    for (let i = 0; i < player.playlists.length; i++) {
+      if(id === player.playlists[i].id){
+          for (let x = 0; x < player.playlists[i].songs.length; x++) {
+              playSong(player.playlists[i].songs[x]);
+          }
+      }
+    }
+    return id;
 }
 
 function editPlaylist(playlistId, songId) {
