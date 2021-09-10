@@ -74,16 +74,80 @@ function durationFormat(duration){
 
 
 function playSong(id) {
-  // your code here
+
+  if (!(checkId(player.songs,id))) throw "ERROR: id doesn't exict.";
+  else for(let i = 0 ; i < player.songs.length ; i ++){
+    if (player.songs[i].id === id)
+      return player.playSong(player.songs[i]);
+  }
+  
 }
+
+// adding a function that checks if there is an id matching
+function checkId(songs,id){
+  for (let i = 0 ; i < songs.length ; i ++){
+    if (id === songs[i].id)
+      return true;
+  }
+  return false;
+}
+
 
 function removeSong(id) {
-  // your code here
+  if (!checkId(player.songs, id)){
+    throw "ID doesn't exist."
+  }
+ 
+  
+  for (let i = 0 ; i < player.songs.length ; i ++){
+      if(player.songs[i].id === id ){
+        player.songs.splice(i,1);
+      }
+  }
+
+  for (let j = 0 ; j < player.playlists.length ; j ++){
+for (let x = 0; x < player.playlists[j].songs.length; x++) {
+    if(player.playlists[j].songs[x] === id){
+      player.playlists[j].songs.splice(x,1);
+    }
+  
+  
 }
 
-function addSong(title, album, artist, duration, id) {
-  // your code here
+  }
+  
 }
+
+/*
+// adding a function that returns a new id
+function newId(arr){
+  let max = arr[0];
+  for (let i = 0; i < arr.length; i++) {
+    if (max < arr[i].id)
+    max = arr[i].id;   
+  }
+    return max+1;
+}
+
+// adding a function that takes the duration in a mm:ss format and turns it to seconds
+function oppDuration(duration){
+  duration = duration.split(':')
+  let minutes = parseInt(duration[0]) * 60
+  let seconds = parseInt(duration[1])
+  return minutes + seconds
+}
+
+function addSong(title, album, artist, duration, id = newId(player.songs)) {
+ if (checkId(player.songs, id)){
+   throw "ID already Exist."
+ }
+
+ duration= oppDuration(duration);
+
+ player.songs.push({title,album,artist,duration,id});
+ return id;
+}
+*/
 
 function removePlaylist(id) {
   // your code here
