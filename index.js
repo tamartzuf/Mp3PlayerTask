@@ -204,7 +204,31 @@ function searchByQuery(query) {
 }
 
 function searchByDuration(duration) {
-  // your code here
+var durationArr=duration.split(":");
+var time=parseInt(durationArr[0]*60) + parseInt(durationArr[1]) ;
+  let closestObj;
+  let minTime;
+
+  //set minimum time according to duration 
+  minTime=Math.abs( time-player.songs[0].duration);
+
+  //search in songs
+  for(let song of player.songs){
+    if(Math.abs(time - song.duration) <= minTime){
+      closestObj = song;
+      minTime = Math.abs(time - song.duration);
+    }
+  }
+
+  //search in playlists
+  for (let playlist of player.playlists) {
+    if (Math.abs(time - playlistDuration(playlist.id)) < minTime) {
+      closestObj = playlist;
+      minTime = Math.abs(time - playlistDuration(playlist.id));
+    }
+  }
+
+  return closestObj;
 }
 
 module.exports = {
