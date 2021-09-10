@@ -129,7 +129,23 @@ function removePlaylist(id) {
 }
 
 function createPlaylist(name, id) {
-  // your code here
+  if(arguments < 2 || id===undefined)
+  {
+    id=1;
+    player.playlists.forEach(element=> {
+      id+=element.id;
+    });
+  }
+  player.playlists.forEach (element => {
+    if(id===element.id){
+      throw new Error("ID is already exist");
+    }
+  });
+  var newPlay={
+    id: id, name: name , songs: []
+  };
+  player.playlists.push(newPlay);
+  return id;
 }
 
 function playPlaylist(id) {
