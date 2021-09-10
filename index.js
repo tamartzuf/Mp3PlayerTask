@@ -150,15 +150,31 @@ function addSong(title, album, artist, duration, id = newId(player.songs)) {
 
 
 function removePlaylist(id) {
-  // your code here
+  if (!checkId(player.playlists, id)){
+    throw "ID doesn't exist."
+  }
+  for (let i = 0; i < player.playlists.length; i++) {
+    if (player.playlists[i].id === id)
+        player.playlists.splice(i,1);
+       
+  }
 }
 
-function createPlaylist(name, id) {
-  // your code here
+/*
+function createPlaylist(name, id = newId(player.playlists)) {
+  if (checkId(player.playlists, id)){
+    throw "ID already exist."}
+
+    player.playlists.push({name, id, songs: []});
+    return id;
+
+  
 }
+
+*/
 
 function playPlaylist(id) {
-  // your code here
+
 }
 
 function editPlaylist(playlistId, songId) {
