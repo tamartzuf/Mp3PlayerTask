@@ -161,7 +161,30 @@ wantedPlay.songs.forEach(element => playSong(element));
 }
 
 function editPlaylist(playlistId, songId) {
-  // your code here
+  var wantedPlay=player.playlists.find(element => element.id==playlistId) ;
+  var indexP = player.playlists.indexOf(wantedPlay);
+
+ if(indexP===-1)
+ {
+   throw new Error("ID playlist is not exist");
+ }
+ var wantedSong=player.songs.find(element => element.id==songId) ;
+ var indexS = player.songs.indexOf(wantedSong);
+
+  if(indexS===-1)
+  {
+    throw new Error("ID song is not exist");
+  }
+
+  var indexSongPlaylist = player.playlists[indexP].songs.indexOf(songId);
+  if(indexSongPlaylist===-1){
+      player.playlists[indexP].songs.push(songId);
+
+  }else if(player.playlists[indexP].songs.length === 1){
+    player.playlists.splice(indexP, 1);
+  }else{
+    player.playlists[indexP].songs.splice(indexSongPlaylist, 1);
+  }
 }
 
 function playlistDuration(id) {
