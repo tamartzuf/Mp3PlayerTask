@@ -188,8 +188,16 @@ function editPlaylist(playlistId, songId) {
 }
 
 function playlistDuration(id) {
-  // your code here
+  var sum=0;
+  var wantedPlaylist= player.playlists.find(element => element.id==id) ;
+  for(let i=0; i<wantedPlaylist.songs.length; i++){
+    var wantedSong =  player.songs.find(elem=> elem.id==wantedPlaylist.songs[i]);
+    sum += wantedSong.duration;
+  }
+  return sum;
+
 }
+
 
 function searchByQuery(query) {
   // your code here
