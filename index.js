@@ -160,7 +160,7 @@ function removePlaylist(id) {
   }
 }
 
-/*
+
 function createPlaylist(name, id = newId(player.playlists)) {
   if (checkId(player.playlists, id)){
     throw "ID already exist."}
@@ -171,7 +171,6 @@ function createPlaylist(name, id = newId(player.playlists)) {
   
 }
 
-*/
 
 function playPlaylist(id) {
 
