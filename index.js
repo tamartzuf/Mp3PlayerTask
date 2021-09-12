@@ -152,7 +152,7 @@ function createPlaylist(name, id) {
     });
   }
 
-  //throw error if the given id already exist
+  //throw error if the given id is already exist
   player.playlists.forEach (element => {
     if(id===element.id){
       throw new Error("ID is already exist");
@@ -182,6 +182,7 @@ var index = player.playlists.indexOf(wantedPlay);
 wantedPlay.songs.forEach(element => playSong(element));
 
 }
+//some cool code
 
 function editPlaylist(playlistId, songId) {
   var wantedPlay=player.playlists.find(element => element.id==playlistId) ;
